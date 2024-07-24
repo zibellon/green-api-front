@@ -1,0 +1,38 @@
+stages:
+  - build
+  - deploy
+
+#########
+# BUILD
+#########
+build:
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "master"
+      when: on_success
+    - when: never
+  stage: build
+  interruptible: true
+  tags:
+    - Internal
+    - Worker
+  script:
+    - docker build . -t $CI_REGISTRY_IMAGE:prod-latest --build-arg REACT_APP_BACK_URL=https://green-api-back.drawapp.ru
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE:prod-latest
+
+#########
+# DEPLOY
+#########
+deploy:
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "master"
+      when: on_success
+    - when: never
+  stage: deploy
+  interruptible: true
+  tags:
+    - Internal
+    - Manager
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker service update green-api-front_prod --with-registry-auth --image=$CI_REGISTRY_IMAGE:prod-latest

@@ -1,0 +1,39 @@
+.container {
+  padding: 20px;
+  width: 800px;
+  margin: auto;
+}
+
+.container__flex {
+  justify-content: space-between;
+}
+
+.side_left {
+  flex-direction: column;
+  gap: 30px;
+  width: 390px;
+}
+
+.apiAndToken_block {
+  padding: 10px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.getButttonBlock {
+  padding: 10px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.messageForm {
+  padding: 10px;
+}
+
+.sendForm {
+  padding: 10px;
+}
+
+.side_rigth {
+  width: 390px;
+}
